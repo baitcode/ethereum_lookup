@@ -1,5 +1,5 @@
 import functools
-import json
+import csv
 import argparse
 from etherscan import Etherscan
 
@@ -52,16 +52,12 @@ internal_tx = wrap_with_default(
     []
 )()
 
-data = {
-    "is_contract": contract_source != None,
-    "contract_source": contract_source,
-    "balance": eth.get_eth_balance(address=creator_address),
-    "normal_tx": normal_tx,
-    "internal_tx": internal_tx,
-}
+data = [
+    contract_source != None,
+    contract_source,
+    eth.get_eth_balance(address=creator_address),
+    normal_tx,
+    internal_tx,
+]
 
-print(json.dumps(
-    data,
-    indent=4, 
-    sort_keys=True
-))
+print(",".join(map(str, data)))
